@@ -1,0 +1,59 @@
+name: Paper Trading Step
+
+on:
+  schedule:
+    # NSE market hours are 09:15-15:30 IST = 03:45-10:00 UTC.
+    # Run every 5 minutes within a slightly padded UTC window.
+    # GitHub Actions cron is UTC and best-effort: scheduled runs can lag
+    # by anywhere from a few minutes to 20-30+ minutes during periods of
+    # platform load, and GitHub explicitly does not guarantee on-time
+    # execution for scheduled workflows. The script itself re-checks
+    # market hours and is a no-op outside them or on holidays where no
+    # new bar appears, so a late/skipped run just means a slightly
+    # stale paper trading state, not a crash -- but don't treat the
+    # 5-minute cadence as precise. If you need tighter timing guarantees,
+    # run it yourself on a real cron (see README "Option B").
+    - cron: "*/5 3-9 * * 1-5"
+    - cron: "0,5 10 * * 1-5"
+  workflow_dispatch: {}   # allows manual trigger from the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: paper-trading-step
+  cancel-in-progress: false
+
+jobs:
+  paper-trade-step:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt -r requirements_kite.txt
+
+      - name: Run paper trading step
+        run: python run_paper_trade_step.py
+        env:
+          # These are only needed when USE_KITE = True in bot/config.py.
+          # Add KITE_API_KEY and KITE_ACCESS_TOKEN as GitHub repository
+          # secrets (Settings -> Secrets and variables -> Actions).
+          # When USE_KITE = False (default), these are safely ignored.
+          KITE_API_KEY: ${{ secrets.KITE_API_KEY }}
+          KITE_ACCESS_TOKEN: ${{ secrets.KITE_ACCESS_TOKEN }}
+
+      - name: Commit updated state and logs
+        run: |
+          git config user.name "paper-trading-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/ reports/
+          git diff --cached --quiet || git commit -m "Paper trading step: $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase --autostash origin "$(git rev-parse --abbrev-ref HEAD)" || true
+          git push

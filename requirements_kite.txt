@@ -1,0 +1,3 @@
+# Install this IN ADDITION TO requirements.txt when USE_KITE = True
+# pip install -r requirements.txt -r requirements_kite.txt
+kiteconnect>=5.0.1

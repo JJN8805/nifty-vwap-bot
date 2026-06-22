@@ -1,0 +1,39 @@
+name: Weekly Backtest
+
+on:
+  schedule:
+    - cron: "0 6 * * 6"   # Every Saturday 06:00 UTC (after market week closes)
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt -r requirements_kite.txt
+
+      - name: Run backtest
+        run: python run_backtest.py --period 60d --interval 5m
+        env:
+          KITE_API_KEY: ${{ secrets.KITE_API_KEY }}
+          KITE_ACCESS_TOKEN: ${{ secrets.KITE_ACCESS_TOKEN }}
+
+      - name: Commit backtest reports
+        run: |
+          git config user.name "paper-trading-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add reports/ data/
+          git diff --cached --quiet || git commit -m "Weekly backtest: $(date -u +'%Y-%m-%d')"
+          git pull --rebase --autostash origin "$(git rev-parse --abbrev-ref HEAD)" || true
+          git push
