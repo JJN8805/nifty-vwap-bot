@@ -1,0 +1,2 @@
+direction,entry_time,entry_price,exit_time,exit_price,exit_reason,stop_price,target_price,original_stop_price,breakeven_active,pnl_points,pnl_inr
+short,2026-06-23 15:20:00+05:30,23796.150390625,2026-06-24 12:05:00+05:30,23820.57531563541,stop_loss,23820.57531563541,23735.088078098972,23820.57531563541,False,-24.424925010411243,-1627.6201256767308
