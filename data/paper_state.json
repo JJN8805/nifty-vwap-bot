@@ -10,8 +10,16 @@
     "2026-07-20": 0,
     "2026-07-21": 0,
     "2026-07-22": 1,
-    "2026-07-23": 0
+    "2026-07-23": 1
   },
-  "open_trade": null,
-  "last_processed_bar": "2026-07-23 11:10:00+05:30"
+  "open_trade": {
+    "direction": "short",
+    "entry_time": "2026-07-23 13:25:00+05:30",
+    "entry_price": 23838.150390625,
+    "stop_price": 23853.58589219876,
+    "original_stop_price": 23853.58589219876,
+    "target_price": 23799.5616366906,
+    "breakeven_active": false
+  },
+  "last_processed_bar": "2026-07-23 13:25:00+05:30"
 }
