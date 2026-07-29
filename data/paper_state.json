@@ -16,10 +16,10 @@
     "direction": "long",
     "entry_time": "2026-07-29 11:05:00+05:30",
     "entry_price": 24238.650390625,
-    "stop_price": 24222.27188542185,
+    "stop_price": 24238.650390625,
     "original_stop_price": 24222.27188542185,
     "target_price": 24279.596653632874,
-    "breakeven_active": false
+    "breakeven_active": true
   },
-  "last_processed_bar": "2026-07-29 11:05:00+05:30"
+  "last_processed_bar": "2026-07-29 13:35:00+05:30"
 }
