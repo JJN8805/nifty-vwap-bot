@@ -1,5 +1,5 @@
 {
-  "equity": 90043.26941485354,
+  "equity": 89046.46120186735,
   "daily_trade_count": {
     "2026-08-05": 0,
     "2026-08-06": 0,
@@ -12,14 +12,6 @@
     "2026-08-17": 0,
     "2026-08-18": 1
   },
-  "open_trade": {
-    "direction": "short",
-    "entry_time": "2026-08-18 10:45:00+05:30",
-    "entry_price": 24204.75,
-    "stop_price": 24219.470126353634,
-    "original_stop_price": 24219.470126353634,
-    "target_price": 24167.949684115916,
-    "breakeven_active": false
-  },
-  "last_processed_bar": "2026-08-18 11:40:00+05:30"
+  "open_trade": null,
+  "last_processed_bar": "2026-08-18 12:30:00+05:30"
 }
